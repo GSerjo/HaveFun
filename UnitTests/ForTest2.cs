@@ -7,18 +7,9 @@ namespace UnitTests
 {
     public class ForTest2
     {
-
-        [Fact]
-        public void Test()
+        private static int[][] GetLockerDistanceGrid(int cityLength, int cityWidth, int[] lockerXCoordinates,
+            int[] lockerYCoordinates)
         {
-            var result = GetLockerDistanceGrid(3, 5, new[] {1}, new[] {1});
-//            var result = GetLockerDistanceGrid(5, 7, new[] {2,4}, new[] {3,7});
-            Console.WriteLine("done");
-        }
-
-        static int[][] GetLockerDistanceGrid(int cityLength, int cityWidth, int[] lockerXCoordinates, int[] lockerYCoordinates)
-        {
-
             if (lockerXCoordinates == null || lockerYCoordinates == null)
             {
                 throw new NullReferenceException();
@@ -27,15 +18,16 @@ namespace UnitTests
             {
                 throw new ArgumentException();
             }
-            if (!InRange(cityLength) || !InRange(cityWidth) || !InRange(lockerXCoordinates) || !InRange(lockerYCoordinates))
+            if (!InRange(cityLength) || !InRange(cityWidth) || !InRange(lockerXCoordinates) ||
+                !InRange(lockerYCoordinates))
             {
                 throw new ArgumentException();
             }
-            int[][] result = new int[cityWidth][];
-            for (int i = 1; i <= cityWidth; i++)
+            var result = new int[cityWidth][];
+            for (var i = 1; i <= cityWidth; i++)
             {
-                int[] blocks = new int[cityLength];
-                for (int j = 1; j <= cityLength; j++)
+                var blocks = new int[cityLength];
+                for (var j = 1; j <= cityLength; j++)
                 {
                     blocks[j - 1] = NumberOfBlockToTheClosestLocker(j, i, lockerXCoordinates, lockerYCoordinates);
                 }
@@ -57,12 +49,13 @@ namespace UnitTests
             return array.All(InRange);
         }
 
-        private static int NumberOfBlockToTheClosestLocker(int cityX, int cityY, int[] lockerXCoordinates, int[] lockerYCoordinates)
+        private static int NumberOfBlockToTheClosestLocker(int cityX, int cityY, int[] lockerXCoordinates,
+            int[] lockerYCoordinates)
         {
-            int result = int.MaxValue;
-            for (int i = 0; i < lockerXCoordinates.Length; i++)
+            var result = int.MaxValue;
+            for (var i = 0; i < lockerXCoordinates.Length; i++)
             {
-                int dummy = Math.Abs(lockerXCoordinates[i] - cityX) + Math.Abs(lockerYCoordinates[i] - cityY);
+                var dummy = Math.Abs(lockerXCoordinates[i] - cityX) + Math.Abs(lockerYCoordinates[i] - cityY);
                 if (dummy < result)
                 {
                     result = dummy;
@@ -79,22 +72,22 @@ namespace UnitTests
                 throw new ArgumentException();
             }
 
-            List<string> directFriends = getDirectFriendsForUser(user);
+            var directFriends = getDirectFriendsForUser(user);
             if (directFriends == null || directFriends.Count == 0)
             {
                 return new List<string>();
             }
 
             // suppose this method is implemented correctly and returns an empty List not null if the user doesn't have courses, otherwise checking for null is required
-            List<string> attendedCoursesForUser = getAttendedCoursesForUser(user);
-            HashSet<string> myCourses = new HashSet<string>(attendedCoursesForUser);
+            var attendedCoursesForUser = getAttendedCoursesForUser(user);
+            var myCourses = new HashSet<string>(attendedCoursesForUser);
 
-            Dictionary<string, int> allCourses = new Dictionary<string, int>();
+            var allCourses = new Dictionary<string, int>();
             foreach (var friend in directFriends)
             {
                 // here's potential N+1 issue
-                List<string> coursesForUser = getAttendedCoursesForUser(friend);
-                foreach (string course in coursesForUser)
+                var coursesForUser = getAttendedCoursesForUser(friend);
+                foreach (var course in coursesForUser)
                 {
                     if (myCourses.Contains(course))
                     {
@@ -121,6 +114,14 @@ namespace UnitTests
         public List<string> getAttendedCoursesForUser(string user)
         {
             throw new NotImplementedException();
+        }
+
+        [Fact]
+        public void Test()
+        {
+            var result = GetLockerDistanceGrid(3, 5, new[] {1}, new[] {1});
+//            var result = GetLockerDistanceGrid(5, 7, new[] {2,4}, new[] {3,7});
+            Console.WriteLine("done");
         }
     }
 }

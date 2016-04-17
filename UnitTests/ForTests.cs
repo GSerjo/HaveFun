@@ -7,25 +7,20 @@ namespace UnitTests
 {
     public sealed class ForTests
     {
-        [Fact]
-        public void Test()
-        {
-        }
-
         public List<string> GetRankedCourses(string user)
         {
             if (string.IsNullOrEmpty(user))
             {
                 throw new ArgumentException();
             }
-            HashSet<string> myCourses = new HashSet<string>(getAttendedCoursesForUser(user));
+            var myCourses = new HashSet<string>(getAttendedCoursesForUser(user));
 
-            Dictionary<string, int> allCourses = new Dictionary<string, int>();
-            List<string> directFriends = getDirectFriendsForUser(user);
+            var allCourses = new Dictionary<string, int>();
+            var directFriends = getDirectFriendsForUser(user);
             foreach (var friend in directFriends)
             {
-                List<string> courses = getAttendedCoursesForUser(friend);
-                foreach (string course in courses)
+                var courses = getAttendedCoursesForUser(friend);
+                foreach (var course in courses)
                 {
                     if (myCourses.Contains(course))
                     {
@@ -54,9 +49,9 @@ namespace UnitTests
             throw new NotImplementedException();
         }
 
-        static int[][] GetLockerDistanceGrid(int cityLength, int cityWidth, int[] lockerXCoordinates, int[] lockerYCoordinates)
+        private static int[][] GetLockerDistanceGrid(int cityLength, int cityWidth, int[] lockerXCoordinates,
+            int[] lockerYCoordinates)
         {
-
             if (lockerXCoordinates == null || lockerYCoordinates == null)
             {
                 throw new NullReferenceException();
@@ -65,15 +60,16 @@ namespace UnitTests
             {
                 throw new ArgumentException();
             }
-            if (!IsInRange(cityLength) || !IsInRange(cityWidth) || !IsInRange(lockerXCoordinates) || !IsInRange(lockerYCoordinates))
+            if (!IsInRange(cityLength) || !IsInRange(cityWidth) || !IsInRange(lockerXCoordinates) ||
+                !IsInRange(lockerYCoordinates))
             {
                 throw new ArgumentException();
             }
-            int[][] result = new int[cityLength][];
-            for (int i = 0; i < cityLength; i++)
+            var result = new int[cityLength][];
+            for (var i = 0; i < cityLength; i++)
             {
-                int[] blocks = new int[cityWidth];
-                for (int j = 0; j < cityWidth; j++)
+                var blocks = new int[cityWidth];
+                for (var j = 0; j < cityWidth; j++)
                 {
                     blocks[j] = NumberOfBlockToTheClosestLocker(i, j, lockerXCoordinates, lockerYCoordinates);
                 }
@@ -94,18 +90,24 @@ namespace UnitTests
             return array.All(IsInRange);
         }
 
-        private static int NumberOfBlockToTheClosestLocker(int cityX, int cityY, int[] lockerXCoordinates, int[] lockerYCoordinates)
+        private static int NumberOfBlockToTheClosestLocker(int cityX, int cityY, int[] lockerXCoordinates,
+            int[] lockerYCoordinates)
         {
-            int result = int.MinValue;
-            for (int i = 0; i < lockerXCoordinates.Length; i++)
+            var result = int.MinValue;
+            for (var i = 0; i < lockerXCoordinates.Length; i++)
             {
-                int dummy = Math.Abs(lockerXCoordinates[i] - cityX - 1) + Math.Abs(lockerYCoordinates[i] - cityY - 1);
+                var dummy = Math.Abs(lockerXCoordinates[i] - cityX - 1) + Math.Abs(lockerYCoordinates[i] - cityY - 1);
                 if (dummy > result)
                 {
                     result = dummy;
                 }
             }
             return result;
+        }
+
+        [Fact]
+        public void Test()
+        {
         }
     }
 }
